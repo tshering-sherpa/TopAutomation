@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="TopAutomation - Mobile functional" verbose="1">
+    <listeners>
+        <listener class-name="com.topautomation.core.reporting.TestListener"/>
+        <listener class-name="com.topautomation.core.reporting.AnnotationTransformer"/>
+    </listeners>
+    <test name="Mobile functional">
+        <groups>
+            <run>
+                <include name="mobile-functional"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="com.topautomation.mobile.tests"/>
+        </packages>
+    </test>
+</suite>

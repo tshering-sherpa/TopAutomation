@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="TopAutomation - API regression" parallel="methods" thread-count="5" data-provider-thread-count="5" verbose="1">
+    <listeners>
+        <listener class-name="com.topautomation.core.reporting.TestListener"/>
+        <listener class-name="com.topautomation.core.reporting.AnnotationTransformer"/>
+    </listeners>
+    <test name="API regression">
+        <groups>
+            <run>
+                <include name="api-regression"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="com.topautomation.api.tests"/>
+        </packages>
+    </test>
+</suite>

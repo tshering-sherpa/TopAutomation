@@ -1,0 +1,6 @@
+## CRLF / header injection probes
+test%0d%0aSet-Cookie:%20injected=1
+test%0d%0aX-Injected:%20true
+test%0aLocation:%20http://example.com
+test\r\nX-Injected: true
+%E5%98%8D%E5%98%8ASet-Cookie:injected=1

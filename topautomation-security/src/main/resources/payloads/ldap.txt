@@ -1,0 +1,8 @@
+## LDAP injection probes
+*
+*)(uid=*))(|(uid=*
+admin)(&)
+*)(objectClass=*
+*)(|(password=*)
+\2a
+)(cn=*))\00

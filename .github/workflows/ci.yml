@@ -1,0 +1,28 @@
+name: TopAutomation CI
+on:
+  push: { branches: [main] }
+  pull_request:
+  workflow_dispatch:
+jobs:
+  web-sanity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '17', cache: maven }
+      - name: Web sanity (headless Chrome)
+        run: mvn -B test -Pweb-sanity -Dheadless=true -Dci=true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: web-reports, path: topautomation-web/target/reports }
+  api-sanity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '17', cache: maven }
+      - name: API sanity
+        run: mvn -B test -Papi-sanity
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: api-reports, path: topautomation-api/target/reports }

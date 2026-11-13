@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="TopAutomation - Security (mobile)" verbose="1">
+    <listeners>
+        <listener class-name="com.topautomation.core.reporting.TestListener"/>
+        <listener class-name="com.topautomation.core.reporting.AnnotationTransformer"/>
+    </listeners>
+    <test name="Mobile injection">
+        <groups>
+            <run>
+                <include name="security-mobile"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="com.topautomation.security.tests.mobile"/>
+        </packages>
+    </test>
+</suite>

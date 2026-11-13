@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.topautomation</groupId>
+        <artifactId>topautomation-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>topautomation-mobile</artifactId>
+    <name>TopAutomation - mobile</name>
+    <description>Appium mobile tests</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.topautomation</groupId>
+            <artifactId>topautomation-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>${appium.java.client.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- runs only when one of this module's profiles is chosen (see parent pom) -->
+                    <skip>${skip.mobile}</skip>
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/suites/${mobile.suite}</suiteXmlFile>
+                    </suiteXmlFiles>
+                    <systemPropertyVariables>
+                        <module.name>mobile</module.name>
+                        <env>${env}</env>
+                        <platform>${platform}</platform>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

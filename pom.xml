@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.topautomation</groupId>
+    <artifactId>topautomation-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>TopAutomation (parent)</name>
+    <description>Java test automation: web (Selenium), mobile (Appium), API (REST Assured), security (injection) - one Maven module each</description>
+
+    <!--
+      MODULES
+        topautomation-core      shared: config loader, TestNG listeners, HTML report, Excel reader, logging
+        topautomation-web       Selenium web tests            (own config, data, suites, logs, reports)
+        topautomation-mobile    Appium mobile tests           (own config, data, suites, logs, reports, apps/)
+        topautomation-api       REST Assured API tests        (own config, data, suites, logs, reports)
+        topautomation-security  injection payloads + web/API/mobile injection tests (own config, suites, logs, reports)
+    -->
+    <modules>
+        <module>topautomation-core</module>
+        <module>topautomation-web</module>
+        <module>topautomation-mobile</module>
+        <module>topautomation-api</module>
+        <module>topautomation-security</module>
+    </modules>
+
+    <properties>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Library versions: run `mvn versions:display-dependency-updates` to check for newer ones -->
+        <selenium.version>4.51.0</selenium.version>
+        <appium.java.client.version>10.1.1</appium.java.client.version>
+        <testng.version>7.12.0</testng.version>
+        <!-- If 6.x gives compile errors in your IDE, 5.5.6 is the last 5.x release: change this one line. -->
+        <restassured.version>6.3.0</restassured.version>
+        <jackson.version>2.19.2</jackson.version>
+        <extentreports.version>5.1.2</extentreports.version>
+        <poi.version>5.4.1</poi.version>
+        <log4j.version>2.25.2</log4j.version>
+
+        <!-- Plugin versions -->
+        <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
+        <maven.surefire.plugin.version>3.5.3</maven.surefire.plugin.version>
+        <maven.enforcer.plugin.version>3.5.0</maven.enforcer.plugin.version>
+        <versions.maven.plugin.version>2.18.0</versions.maven.plugin.version>
+
+        <!-- Per-module run switches. A module runs its tests ONLY when a profile of that module is chosen
+             (-Pweb-sanity, -Papi-regression, ...). Defaults below = "skip" and "run the module's 'all' suite". -->
+        <skip.web>true</skip.web>
+        <skip.api>true</skip.api>
+        <skip.mobile>true</skip.mobile>
+        <skip.security>true</skip.security>
+        <web.suite>web-all.xml</web.suite>
+        <api.suite>api-all.xml</api.suite>
+        <mobile.suite>mobile-all.xml</mobile.suite>
+        <security.suite>security-all.xml</security.suite>
+
+        <!-- Optional runtime overrides, blank = use the module's config file. Example: -Dbrowser=firefox -Dheadless=true -->
+        <env></env>
+        <browser></browser>
+        <headless></headless>
+        <platform></platform>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Pin Selenium modules so Appium's version range can't pull a different one -->
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-api</artifactId>
+                <version>${selenium.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-remote-driver</artifactId>
+                <version>${selenium.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-support</artifactId>
+                <version>${selenium.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven.surefire.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven.enforcer.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-tooling</id>
+                        <phase>validate</phase>
+                        <goals><goal>enforce</goal></goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>[${java.version},)</version>
+                                    <message>TopAutomation needs JDK ${java.version} or newer.</message>
+                                </requireJavaVersion>
+                                <requireMavenVersion>
+                                    <version>[3.9.0,)</version>
+                                    <message>TopAutomation needs Maven 3.9.0 or newer.</message>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <release>${java.version}</release>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>${versions.maven.plugin.version}</version>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- =====================================================================================
+         PROFILES        mvn clean test -P<id>
+           WEB       web-sanity | web-functional | web-regression | web-all
+           API       api-sanity | api-functional | api-regression | api-all
+           MOBILE    mobile-sanity | mobile-functional | mobile-regression | mobile-all
+           SECURITY  security-web | security-api | security-mobile | security-all
+           full      web regression + API regression
+         Profiles of different modules can be combined:  -Pweb-sanity,api-sanity
+         ===================================================================================== -->
+    <profiles>
+        <!-- == WEB module == -->
+        <profile><id>web-sanity</id><properties><skip.web>false</skip.web><web.suite>web-sanity.xml</web.suite></properties></profile>
+        <profile><id>web-functional</id><properties><skip.web>false</skip.web><web.suite>web-functional.xml</web.suite></properties></profile>
+        <profile><id>web-regression</id><properties><skip.web>false</skip.web><web.suite>web-regression.xml</web.suite></properties></profile>
+        <profile><id>web-all</id><properties><skip.web>false</skip.web><web.suite>web-all.xml</web.suite></properties></profile>
+        <!-- == API module == -->
+        <profile><id>api-sanity</id><properties><skip.api>false</skip.api><api.suite>api-sanity.xml</api.suite></properties></profile>
+        <profile><id>api-functional</id><properties><skip.api>false</skip.api><api.suite>api-functional.xml</api.suite></properties></profile>
+        <profile><id>api-regression</id><properties><skip.api>false</skip.api><api.suite>api-regression.xml</api.suite></properties></profile>
+        <profile><id>api-all</id><properties><skip.api>false</skip.api><api.suite>api-all.xml</api.suite></properties></profile>
+        <!-- == MOBILE module (needs Appium + emulator/device) == -->
+        <profile><id>mobile-sanity</id><properties><skip.mobile>false</skip.mobile><mobile.suite>mobile-sanity.xml</mobile.suite></properties></profile>
+        <profile><id>mobile-functional</id><properties><skip.mobile>false</skip.mobile><mobile.suite>mobile-functional.xml</mobile.suite></properties></profile>
+        <profile><id>mobile-regression</id><properties><skip.mobile>false</skip.mobile><mobile.suite>mobile-regression.xml</mobile.suite></properties></profile>
+        <profile><id>mobile-all</id><properties><skip.mobile>false</skip.mobile><mobile.suite>mobile-all.xml</mobile.suite></properties></profile>
+        <!-- == SECURITY module (injection tests; authorised targets only) == -->
+        <profile><id>security-web</id><properties><skip.security>false</skip.security><security.suite>security-web.xml</security.suite></properties></profile>
+        <profile><id>security-api</id><properties><skip.security>false</skip.security><security.suite>security-api.xml</security.suite></properties></profile>
+        <profile><id>security-mobile</id><properties><skip.security>false</skip.security><security.suite>security-mobile.xml</security.suite></properties></profile>
+        <profile><id>security-all</id><properties><skip.security>false</skip.security><security.suite>security-all.xml</security.suite></properties></profile>
+        <!-- == convenience: web regression + API regression in one run == -->
+        <profile><id>full</id><properties><skip.web>false</skip.web><web.suite>web-regression.xml</web.suite><skip.api>false</skip.api><api.suite>api-regression.xml</api.suite></properties></profile>
+    </profiles>
+</project>

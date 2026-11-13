@@ -1,0 +1,8 @@
+## HTML injection probes
+<h1>injected</h1>
+<b>bold</b>
+<a href="http://example.com">injected link</a>
+<form action="http://example.com"><input name="x"></form>
+<marquee>injected</marquee>
+<meta http-equiv="refresh" content="0;url=http://example.com">
+<style>body{display:none}</style>

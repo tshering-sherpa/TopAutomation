@@ -1,0 +1,26 @@
+## Malformed / boundary input. Long strings (256, 1024, 10000 chars) are generated in code.
+%00
+\0
+%s%s%s%s%s%n
+%x%x%x%x
+{{}}
+[[]]
+%
+\
+'
+"
+`
+ 
+   leading and trailing spaces   
+٠١٢٣٤٥٦٧٨٩
+Ω≈ç√∫˜µ≤≥÷
+😀🔥👨‍👩‍👧‍👦
+‮reversed-rtl-text
+Ṱ̺̺̕o͞ ̷i̲̬͇̪͙n̝̗͕v̟̜̘̦͟o̶̙̰̠kè͚̮̺̪̹̱̤ ̖t̝͕̳̣̻̪͞h̼͓̲̦̳̘̲e͇̣̰̦̬͎ ̢̼̻̱̘h͚͎͙̜̣̲ͅi̦̲̣̰̤v̻͍e̺̭̳̪̰-m̢iͅn̖̺̞̲̯̰d̵̼̟͙̩̼̘̳
+null
+undefined
+NaN
+-1
+99999999999999999999
+0.0000000001
+true

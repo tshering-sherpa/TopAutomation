@@ -1,0 +1,8 @@
+target/
+.idea/
+*.iml
+.vscode/
+.DS_Store
+# app binaries for mobile tests (keep the folder)
+topautomation-mobile/apps/*
+!topautomation-mobile/apps/.gitkeep

